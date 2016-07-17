@@ -1,0 +1,8 @@
+#ifndef __noise_reducing_position_processor_impl_h__
+#define __noise_reducing_position_processor_impl_h__
+
+#include "PositionProcessor.h"
+
+PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, int filterLength);
+
+#endif
