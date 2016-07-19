@@ -6,7 +6,7 @@ main:
 	main.cpp \
 	Common.cpp \
 	RandomPositionGenerator.cpp \
-	PositionGeneratorRunner.cpp \
+	PositionGeneratorGroup.cpp \
 	PositionFileLogger.cpp \
 	PositionProcessorImpl.cpp \
 	StatisticsFileLogger.cpp \

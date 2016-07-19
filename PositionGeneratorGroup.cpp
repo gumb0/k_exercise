@@ -1,4 +1,4 @@
-#include "PositionGeneratorRunner.h"
+#include "PositionGeneratorGroup.h"
 
 #include <algorithm>
 #include <iterator>
@@ -6,11 +6,10 @@
 
 namespace
 {
-    // TODO rename to group ?
-    class ParallelPositionGeneratorRunner : public PositionGeneratorRunner
+    class ParallelPositionGeneratorGroup : public PositionGeneratorGroup
     {
     public:
-        explicit ParallelPositionGeneratorRunner(const std::vector<PositionGeneratorPtr>& generators) : mGenerators(generators)
+        explicit ParallelPositionGeneratorGroup(const std::vector<PositionGeneratorPtr>& generators) : mGenerators(generators)
         {
         }
 
@@ -42,7 +41,7 @@ namespace
     };
 }
 
-std::unique_ptr<PositionGeneratorRunner> CreatePositionGeneratorRunner(const std::vector<PositionGeneratorPtr>& generators)
+std::unique_ptr<PositionGeneratorGroup> CreatePositionGeneratorGroup(const std::vector<PositionGeneratorPtr>& generators)
 {
-    return std::unique_ptr<PositionGeneratorRunner>(new ParallelPositionGeneratorRunner(generators));
+    return std::unique_ptr<PositionGeneratorGroup>(new ParallelPositionGeneratorGroup(generators));
 }

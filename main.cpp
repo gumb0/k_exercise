@@ -1,7 +1,7 @@
 #include "NoiseReducingPositionProcessor.h"
 #include "NoisyPositionGenerator.h"
 #include "PositionFileLogger.h"
-#include "PositionGeneratorRunner.h"
+#include "PositionGeneratorGroup.h"
 #include "PositionProcessorImpl.h"
 #include "RandomPositionGenerator.h"
 #include "StatisticsFileLogger.h"
@@ -65,14 +65,14 @@ int main(int argc, char *argv[])
         for (int i = 0; i < SensorCount; ++i)
             generators.push_back(SetupSensor(i, noise));
 
-        std::unique_ptr<PositionGeneratorRunner> runner(CreatePositionGeneratorRunner(generators));
+        std::unique_ptr<PositionGeneratorGroup> group(CreatePositionGeneratorGroup(generators));
 
-        runner->start();
+        group->start();
 
         std::cout << "Running...\nPress Enter to stop\n";
         std::cin.get();
 
-        runner->stop();
+        group->stop();
     }
     catch (const std::exception& e)
     {
