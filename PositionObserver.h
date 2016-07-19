@@ -5,7 +5,6 @@
 
 #include <memory>
 
-/// TODO noncopyable?
 class PositionObserver : NonCopyable
 {
 public:

@@ -1,5 +1,5 @@
-#ifndef __position_generator_runner_h__
-#define __position_generator_runner_h__
+#ifndef __position_generator_group_h__
+#define __position_generator_group_h__
 
 #include "PositionGenerator.h"
 
