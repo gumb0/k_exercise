@@ -13,7 +13,17 @@ namespace
         {
         }
 
-        // TODO don't leak threads, join in destructor
+        ~ParallelPositionGeneratorGroup()
+        {
+            try
+            {
+                stop();
+            }
+            catch (const std::exception&)
+            {
+            }
+        }
+
 
         void start() override
         {
