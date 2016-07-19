@@ -1,9 +1,9 @@
 #include "NoiseReducingPositionProcessor.h"
 #include "NoisyPositionGenerator.h"
 #include "PositionFileLogger.h"
-#include "PositionGeneratorImpl.h"
 #include "PositionGeneratorRunner.h"
 #include "PositionProcessorImpl.h"
+#include "RandomPositionGenerator.h"
 #include "StatisticsFileLogger.h"
 
 #include <iostream>

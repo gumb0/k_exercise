@@ -1,4 +1,4 @@
-#include "PositionGeneratorImpl.h"
+#include "RandomPositionGenerator.h"
 
 #include <atomic>
 #include <random>
@@ -11,13 +11,15 @@ namespace
     const double SpeedDurationMinSeconds = 1;
     const double SpeedDurationMaxSeconds = 30;
 
+    // This implementation emulates moving in random direction with random speed, 
+    // changing it after random period of time
 
-    class PositionGeneratorImpl : public PositionGenerator
+    class RandomPositionGenerator : public PositionGenerator
     {
     public:
-        PositionGeneratorImpl(int sensorId, double frequencyHz, double playingFieldSizeMeters, double maxSpeedMetersPerSec) : 
+        RandomPositionGenerator(int sensorId, double frequencyHz, double playingFieldSizeMeters, double maxSpeedMetersPerSec) : 
             mSensorId(sensorId), 
-            mPeriod(1.0 / frequencyHz),
+            mSensorPeriod(1.0 / frequencyHz),
             mPlayingFieldSize(playingFieldSizeMeters),
             mIsStopped(false),
             mRandomEngine(std::random_device()()),
@@ -44,6 +46,9 @@ namespace
         void start() override
         {
             // TODO do we need to catch here?
+            // TODO check if already started?
+            /*if (!mIsStopped)
+                return;*/
 
             mIsStopped = false;
 
@@ -55,7 +60,7 @@ namespace
                 mLastTimestamp = timestamp;
 
                 // duration_cast needed here only for visual studio compiler
-                std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(mPeriod));
+                std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(mSensorPeriod));
             }
         }
 
@@ -118,10 +123,9 @@ namespace
 
     private:
         const int mSensorId;
-        const std::chrono::duration<double> mPeriod; // double seconds
+        const std::chrono::duration<double> mSensorPeriod; // double seconds
         const double mPlayingFieldSize;
         std::vector<PositionObserverPtr> mObservers;
-        // TODO is atomic enough
         std::atomic_bool mIsStopped;
         std::default_random_engine mRandomEngine;
         std::uniform_real_distribution<double> mSpeedDistribution;
@@ -140,5 +144,5 @@ namespace
 PositionGeneratorPtr CreateRandomPositionGenerator(int sensorId, double frequencyHz, double playingFieldSizeMeters, 
     double maxSpeedMetersPerSec)
 {
-    return std::make_shared<PositionGeneratorImpl>(sensorId, frequencyHz, playingFieldSizeMeters, maxSpeedMetersPerSec);
+    return std::make_shared<RandomPositionGenerator>(sensorId, frequencyHz, playingFieldSizeMeters, maxSpeedMetersPerSec);
 }

@@ -147,7 +147,7 @@
     <ClInclude Include="..\NoisyPositionGenerator.h" />
     <ClInclude Include="..\PositionFileLogger.h" />
     <ClInclude Include="..\PositionGenerator.h" />
-    <ClInclude Include="..\PositionGeneratorImpl.h" />
+    <ClInclude Include="..\RandomPositionGenerator.h" />
     <ClInclude Include="..\PositionGeneratorRunner.h" />
     <ClInclude Include="..\PositionObserver.h" />
     <ClInclude Include="..\PositionProcessor.h" />
@@ -161,7 +161,7 @@
     <ClCompile Include="..\NoiseReducingPositionProcessor.cpp" />
     <ClCompile Include="..\NoisyPositionGenerator.cpp" />
     <ClCompile Include="..\PositionFileLogger.cpp" />
-    <ClCompile Include="..\PositionGeneratorImpl.cpp" />
+    <ClCompile Include="..\RandomPositionGenerator.cpp" />
     <ClCompile Include="..\PositionGeneratorRunner.cpp" />
     <ClCompile Include="..\PositionProcessorImpl.cpp" />
     <ClCompile Include="..\StatisticsFileLogger.cpp" />

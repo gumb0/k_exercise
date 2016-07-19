@@ -1,7 +1,6 @@
 #ifndef __position_generator_h__
 #define __position_generator_h__
 
-#include "Common.h"
 #include "PositionObserver.h"
 
 #include <memory>

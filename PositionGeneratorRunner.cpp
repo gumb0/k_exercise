@@ -6,11 +6,11 @@
 
 namespace
 {
-    // TODO rename?
-    class PositionGeneratorRunnerImpl : public PositionGeneratorRunner
+    // TODO rename to group ?
+    class ParallelPositionGeneratorRunner : public PositionGeneratorRunner
     {
     public:
-        explicit PositionGeneratorRunnerImpl(const std::vector<PositionGeneratorPtr>& generators) : mGenerators(generators)
+        explicit ParallelPositionGeneratorRunner(const std::vector<PositionGeneratorPtr>& generators) : mGenerators(generators)
         {
         }
 
@@ -44,5 +44,5 @@ namespace
 
 std::unique_ptr<PositionGeneratorRunner> CreatePositionGeneratorRunner(const std::vector<PositionGeneratorPtr>& generators)
 {
-    return std::unique_ptr<PositionGeneratorRunner>(new PositionGeneratorRunnerImpl(generators));
+    return std::unique_ptr<PositionGeneratorRunner>(new ParallelPositionGeneratorRunner(generators));
 }

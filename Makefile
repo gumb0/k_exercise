@@ -5,7 +5,7 @@ main:
 	$(CC) $(CFLAGS) \
 	main.cpp \
 	Common.cpp \
-	PositionGeneratorImpl.cpp \
+	RandomPositionGenerator.cpp \
 	PositionGeneratorRunner.cpp \
 	PositionFileLogger.cpp \
 	PositionProcessorImpl.cpp \

@@ -3,6 +3,8 @@
 
 #include "PositionProcessor.h"
 
+// Decorator compensating noise before passing it to original processors
+
 PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, int filterLength);
 
 #endif

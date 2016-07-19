@@ -3,6 +3,7 @@
 
 #include "PositionGenerator.h"
 
+// Decorator adding noise to original signal
 
 PositionGeneratorPtr CreateNoisyPositionGenerator(PositionGeneratorPtr generator, double amplitudeMeters);
 

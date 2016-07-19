@@ -20,6 +20,7 @@ namespace
     public:
         explicit StatisticsFileLogger(int sensorId) : mFile(getFileName(sensorId))
         {
+            // TODO check errors
         }
 
         void onStatisticsUpdate(int sensorId, double speed, double distance, const TimePoint& timestamp) override
@@ -27,6 +28,7 @@ namespace
             // assuming several updates from the same sensor won't happen at the same time, so writing to file is safe
 
             mFile << FormatTimePoint(timestamp) << ' ' << sensorId << ' ' << speed << ' ' << distance << '\n';
+            // TODO check errors
         }
 
     private:

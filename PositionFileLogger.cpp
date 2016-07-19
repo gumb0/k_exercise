@@ -20,7 +20,6 @@ namespace
     public:
         explicit PositionFileLogger(int sensorId) : mFile(getFileName(sensorId))
         {
-            // TODO is this enough
             if (!mFile)
                 throw std::runtime_error("Failed to open position log file for write.");
         }
@@ -30,6 +29,8 @@ namespace
             // assuming several updates from the same sensor won't happen at the same time, so writing to file is safe
 
             mFile << FormatTimePoint(timestamp) << ' ' << sensorId << ' ' << x << ' ' << y << '\n';
+            if (!mFile)
+                throw std::runtime_error("Failed write to position log file.");
         }
 
     private:
