@@ -46,7 +46,7 @@ namespace
         }
 
     private:
-        std::vector<PositionGeneratorPtr> mGenerators;
+        const std::vector<PositionGeneratorPtr> mGenerators;
         std::vector<std::thread> mThreads;
     };
 }
