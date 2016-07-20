@@ -9,7 +9,7 @@ namespace
     const std::string FileNamePrefix = "statistics";
     const std::string FileNameSuffix = ".log";
 
-    std::string getFileName(int sensorId)
+    std::string GetFileName(int sensorId)
     {
         return FileNamePrefix + std::to_string(sensorId) + FileNameSuffix;
     }
@@ -18,7 +18,7 @@ namespace
     class StatisticsFileLogger : public StatisticsObserver
     {
     public:
-        explicit StatisticsFileLogger(int sensorId) : mFile(getFileName(sensorId))
+        explicit StatisticsFileLogger(int sensorId) : mFile(GetFileName(sensorId))
         {
             // TODO check errors
         }

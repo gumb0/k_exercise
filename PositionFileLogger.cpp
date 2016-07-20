@@ -9,7 +9,7 @@ namespace
     const std::string FileNamePrefix = "position";
     const std::string FileNameSuffix = ".log";
 
-    std::string getFileName(int sensorId)
+    std::string GetFileName(int sensorId)
     {
         return FileNamePrefix + std::to_string(sensorId) + FileNameSuffix;
     }
@@ -18,7 +18,7 @@ namespace
     class PositionFileLogger : public PositionObserver
     {
     public:
-        explicit PositionFileLogger(int sensorId) : mFile(getFileName(sensorId))
+        explicit PositionFileLogger(int sensorId) : mFile(GetFileName(sensorId))
         {
             if (!mFile)
                 throw std::runtime_error("Failed to open position log file for write.");
