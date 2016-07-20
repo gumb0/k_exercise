@@ -20,7 +20,8 @@ namespace
     public:
         explicit StatisticsFileLogger(int sensorId) : mFile(GetFileName(sensorId))
         {
-            // TODO check errors
+            if (!mFile)
+                throw std::runtime_error("Failed to open position statisics file for write.");
         }
 
         void onStatisticsUpdate(int sensorId, double speed, double distance, const TimePoint& timestamp) override
@@ -28,7 +29,8 @@ namespace
             // assuming several updates from the same sensor won't happen at the same time, so writing to file is safe
 
             mFile << FormatTimePoint(timestamp) << ' ' << sensorId << ' ' << speed << ' ' << distance << '\n';
-            // TODO check errors
+            if (!mFile)
+                throw std::runtime_error("Failed write to statistics log file.");
         }
 
     private:
