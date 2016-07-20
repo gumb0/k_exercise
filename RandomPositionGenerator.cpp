@@ -1,6 +1,7 @@
 #include "RandomPositionGenerator.h"
 
 #include <atomic>
+#include <iostream>
 #include <random>
 #include <thread>
 #include <vector>
@@ -11,6 +12,14 @@ namespace
     const double SpeedDurationMinSeconds = 1;
     const double SpeedDurationMaxSeconds = 30;
 
+
+    inline std::chrono::milliseconds GetPeriod(double frequencyHz)
+    {
+        const std::chrono::duration<double> period(1.0 / frequencyHz); // double seconds
+        return std::chrono::duration_cast<std::chrono::milliseconds>(period);
+    }
+
+
     // This implementation emulates moving in random direction with random speed, 
     // changing it after random period of time
 
@@ -19,9 +28,9 @@ namespace
     public:
         RandomPositionGenerator(int sensorId, double frequencyHz, double playingFieldSizeMeters, double maxSpeedMetersPerSec) : 
             mSensorId(sensorId), 
-            mSensorPeriod(1.0 / frequencyHz),
+            mSensorPeriod(GetPeriod(frequencyHz)),
             mPlayingFieldSize(playingFieldSizeMeters),
-            mIsStopped(false),
+            mIsStopped(true),
             mRandomEngine(std::random_device()()),
             mSpeedDistribution(0, maxSpeedMetersPerSec),
             mDirectionDistribution(0, 2 * Pi),
@@ -45,22 +54,23 @@ namespace
 
         void start() override
         {
-            // TODO do we need to catch here?
-            // TODO check if already started?
-            /*if (!mIsStopped)
-                return;*/
+            // Ignore start request if it's already started 
+            if (!mIsStopped.exchange(false))
+                return;
 
-            mIsStopped = false;
-
-            while (!mIsStopped)
+            try
             {
-                const TimePoint& timestamp = std::chrono::system_clock::now();
-                updatePosition(timestamp);
-                notifyObservers(mX, mY, timestamp);
-                mLastTimestamp = timestamp;
+                while (!mIsStopped)
+                {
+                    update();
 
-                // duration_cast needed here only for visual studio compiler
-                std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(mSensorPeriod));
+                    std::this_thread::sleep_for(mSensorPeriod);
+                }
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Error in sensor " << mSensorId << " occured: " << e.what() << '\n';
+                mIsStopped = true;
             }
         }
 
@@ -89,6 +99,15 @@ namespace
             mSpeedDuration = std::chrono::duration<double>(mSpeedDurationDistribution(mRandomEngine));
 
             mLastSpeedChange = std::chrono::system_clock::now();
+        }
+
+        void update()
+        {
+            const TimePoint& timestamp = std::chrono::system_clock::now();
+            updatePosition(timestamp);
+            notifyObservers(mX, mY, timestamp);
+            
+            mLastTimestamp = timestamp;
         }
 
         void updatePosition(const TimePoint& timestamp)
@@ -123,7 +142,7 @@ namespace
 
     private:
         const int mSensorId;
-        const std::chrono::duration<double> mSensorPeriod; // double seconds
+        const std::chrono::milliseconds mSensorPeriod;
         const double mPlayingFieldSize;
         std::vector<PositionObserverPtr> mObservers;
         std::atomic_bool mIsStopped;
