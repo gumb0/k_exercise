@@ -7,16 +7,20 @@ namespace
     class NoisyPositionObserver : public PositionObserver
     {
     public:
-        NoisyPositionObserver(PositionObserverPtr observer, double amplitude, unsigned int seed) : 
-            mObserver(observer),
-            mRandomEngine(seed),
+        NoisyPositionObserver(const std::vector<PositionObserverPtr>& originalObservers, double amplitude) :
+            mOriginalObservers(originalObservers),
+            mRandomEngine(std::random_device()()),
             mDistribution(-amplitude, amplitude)            
         {
         }
 
         void onPositionUpdate(int sensorId, double x, double y, const TimePoint& timestamp) override
         {
-            mObserver->onPositionUpdate(sensorId, addNoise(x), addNoise(y), timestamp);
+            const double noisyX = addNoise(x);
+            const double noisyY = addNoise(y);
+
+            for (PositionObserverPtr observer : mOriginalObservers)
+                observer->onPositionUpdate(sensorId, noisyX, noisyY, timestamp);
         }
 
     private:
@@ -26,7 +30,7 @@ namespace
         }
 
     private:
-        PositionObserverPtr mObserver;
+        const std::vector<PositionObserverPtr>& mOriginalObservers;
         std::default_random_engine mRandomEngine;
         std::uniform_real_distribution<double> mDistribution;
     };
@@ -35,16 +39,16 @@ namespace
     class NoisyPositionGenerator : public PositionGenerator
     {
     public:
-        NoisyPositionGenerator(PositionGeneratorPtr generator, double amplitude) : 
+        NoisyPositionGenerator(PositionGeneratorPtr generator, double amplitude) :
             mGenerator(generator),
-            mAmplitude(amplitude)
+            mNoisyObserver(std::make_shared<NoisyPositionObserver>(mObservers, amplitude))
         {
+            mGenerator->addPositionObserver(mNoisyObserver);
         }
 
         void addPositionObserver(PositionObserverPtr observer) override
         {
-            PositionObserverPtr decoratedObserver(std::make_shared<NoisyPositionObserver>(observer, mAmplitude, mRandomDevice()));
-            mGenerator->addPositionObserver(decoratedObserver);
+            mObservers.push_back(observer);
         }
 
         void start() override
@@ -59,8 +63,8 @@ namespace
 
     private:
         PositionGeneratorPtr mGenerator;
-        const double mAmplitude;
-        std::random_device mRandomDevice;
+        std::vector<PositionObserverPtr> mObservers;
+        PositionObserverPtr mNoisyObserver;
     };
 }
 
