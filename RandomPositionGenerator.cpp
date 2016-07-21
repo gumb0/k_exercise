@@ -103,7 +103,7 @@ namespace
 
         void update()
         {
-            const TimePoint& timestamp = std::chrono::system_clock::now();
+            const TimePoint timestamp = std::chrono::system_clock::now();
             updatePosition(timestamp);
             notifyObservers(mX, mY, timestamp);
             
