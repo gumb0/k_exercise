@@ -151,7 +151,6 @@
     <ClInclude Include="..\RandomPositionGenerator.h" />
     <ClInclude Include="..\PositionObserver.h" />
     <ClInclude Include="..\PositionProcessor.h" />
-    <ClInclude Include="..\PositionProcessorImpl.h" />
     <ClInclude Include="..\StatisticsFileLogger.h" />
     <ClInclude Include="..\StatisticsObserver.h" />
   </ItemGroup>
@@ -162,12 +161,9 @@
     <ClCompile Include="..\NoisyPositionGenerator.cpp" />
     <ClCompile Include="..\PositionFileLogger.cpp" />
     <ClCompile Include="..\PositionGeneratorGroup.cpp" />
+    <ClCompile Include="..\PositionProcessor.cpp" />
     <ClCompile Include="..\RandomPositionGenerator.cpp" />
-    <ClCompile Include="..\PositionProcessorImpl.cpp" />
     <ClCompile Include="..\StatisticsFileLogger.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
