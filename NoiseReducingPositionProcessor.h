@@ -5,6 +5,6 @@
 
 // Decorator compensating noise before passing it to original processor
 
-PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, int filterLength);
+PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, std::size_t filterLength);
 
 #endif

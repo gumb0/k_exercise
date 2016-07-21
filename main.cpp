@@ -17,7 +17,7 @@ namespace
     const double PlayingFieldSizeMeters = 100;
     const double MaxSpeedMetersPerSecond = 6;
     const double NoiseAmplitudeMeters = 0.3;
-    const int NoiseReductionFilterLength = 21;
+    const std::size_t NoiseReductionFilterLength = 21;
 
 
 

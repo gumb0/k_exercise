@@ -7,7 +7,7 @@ namespace
     class NoiseReducingPositionProcessor : public PositionProcessor
     {
     public:
-        explicit NoiseReducingPositionProcessor(PositionProcessorPtr processor, int filterLength) : 
+        explicit NoiseReducingPositionProcessor(PositionProcessorPtr processor, std::size_t filterLength) : 
             mProcessor(processor),
             mFilterLength(filterLength),
             mSumX(0),
@@ -47,7 +47,7 @@ namespace
 
     private:
         PositionProcessorPtr mProcessor;
-        const int mFilterLength;
+        const std::size_t mFilterLength;
         std::deque<double> mLastX;
         std::deque<double> mLastY;
         double mSumX;
@@ -55,7 +55,7 @@ namespace
     };
 }
 
-PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, int filterLength)
+PositionProcessorPtr CreateNoiseReducingPositionProcessor(PositionProcessorPtr processor, std::size_t filterLength)
 {
     return std::make_shared<NoiseReducingPositionProcessor>(processor, filterLength);
 }
