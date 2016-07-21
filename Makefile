@@ -8,7 +8,7 @@ main:
 	RandomPositionGenerator.cpp \
 	PositionGeneratorGroup.cpp \
 	PositionFileLogger.cpp \
-	PositionProcessorImpl.cpp \
+	PositionProcessor.cpp \
 	StatisticsFileLogger.cpp \
 	NoisyPositionGenerator.cpp \
 	NoiseReducingPositionProcessor.cpp

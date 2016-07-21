@@ -1,4 +1,4 @@
-#include "PositionProcessorImpl.h"
+#include "PositionProcessor.h"
 
 #include <assert.h>
 #include <math.h>
@@ -6,6 +6,17 @@
 
 namespace
 {
+    inline double GetDistance(double x1, double y1, double x2, double y2)
+    {
+        return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    }
+
+    inline double GetSpeed(double distance, double duration)
+    {
+        return distance / duration;
+    }
+
+
     class PositionProcessorImpl : public PositionProcessor
     {
     public:
@@ -26,7 +37,7 @@ namespace
         {
             assert(sensorId == mSensorId);
 
-            // skip first position update, we don't have enough data yet
+            // first position update is skipped, it's not enough data to update statistics yet
             if (mLastX > 0 && mLastY > 0)
                 updateStatistics(x, y, timestamp);
 
@@ -41,11 +52,10 @@ namespace
             const std::chrono::duration<double> duration = timestamp - mLastTimestamp;
             const double durationSeconds = duration.count();
 
-            // TODO extract
-            const double distance = sqrt((x - mLastX) * (x - mLastX) + (y - mLastY) * (y - mLastY));
-            const double speed = distance / durationSeconds;
-
+            const double distance = GetDistance(x, y, mLastX, mLastY);
             mDistance += distance;
+
+            const double speed = GetSpeed(distance, durationSeconds);
 
             notifyObservers(speed, mDistance, timestamp);
         }
@@ -66,7 +76,7 @@ namespace
     };
 }
 
-PositionProcessorPtr CreatePositionProcessorImpl(int sensorId)
+PositionProcessorPtr CreatePositionProcessor(int sensorId)
 {
     return std::make_shared<PositionProcessorImpl>(sensorId);
 }

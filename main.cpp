@@ -2,7 +2,7 @@
 #include "NoisyPositionGenerator.h"
 #include "PositionFileLogger.h"
 #include "PositionGeneratorGroup.h"
-#include "PositionProcessorImpl.h"
+#include "PositionProcessor.h"
 #include "RandomPositionGenerator.h"
 #include "StatisticsFileLogger.h"
 
@@ -30,7 +30,7 @@ namespace
 
     PositionProcessorPtr CreatePositionProcessor(int sensorId, bool noiseReduction)
     {
-        PositionProcessorPtr processor(CreatePositionProcessorImpl(sensorId));
+        PositionProcessorPtr processor(::CreatePositionProcessor(sensorId));
 
         return noiseReduction ? CreateNoiseReducingPositionProcessor(processor, NoiseReductionFilterLength) : processor;
     }
